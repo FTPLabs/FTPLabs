@@ -1,0 +1,23 @@
+name: Profile README
+  on:
+    push:
+      branches: [main]
+    schedule:
+      - cron: '0 */6 * * *'
+    workflow_dispatch:
+
+  jobs:
+    update:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+        - name: Touch README
+          run: |
+            echo "" >> README.md
+            git config user.name "FTPDev"
+            git config user.email "ftpdev@ftplabs.dev"
+            git add README.md
+            git diff --staged --quiet || git commit -m "chore: refresh profile README"
+            git push
+  
